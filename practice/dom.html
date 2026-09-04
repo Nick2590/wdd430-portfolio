@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM vs React Practice</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>Direct DOM Manipulation</h1>
+      <article id="direct-news"></article>
+    </section>
+
+    <section>
+      <h1>React</h1>
+      <article id="react-news"></article>
+    </section>
+  </main>
+
+  <script>
+    const directNews = document.getElementById("direct-news");
+    const newsParagraph = document.createElement("p");
+    newsParagraph.textContent = "Breaking news: React is awesome!";
+    directNews.appendChild(newsParagraph);
+  </script>
+
+  <script type="text/jsx">
+    function News() {
+      return <p>Breaking news: React is awesome!</p>;
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("react-news"));
+    root.render(<News />);
+  </script>
+</body>
+</html>

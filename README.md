@@ -37,7 +37,7 @@ The application runs at `http://localhost:3000`.
 
 ## Live Site
 
-Vercel URL:(https://wdd430-portfolio-wine-gamma.vercel.app/)
+Vercel URL: https://wdd430-portfolio-nick-1fb1.vercel.app/
 
 I will replace this after deployment.
 ## Week 01

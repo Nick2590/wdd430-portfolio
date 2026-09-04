@@ -1,3 +1,12 @@
+## Week 01
+
+- Full-stack architecture research
+- Direct DOM manipulation
+- React components
+- JSX
+- Babel
+- ReactDOM.createRoot()
+- React Core Concepts practice activity
 # WDD 430 Portfolio
 
 Student: Nicholas Goodsell

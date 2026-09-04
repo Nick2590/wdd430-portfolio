@@ -1,0 +1,46 @@
+<!--
+  A React component is a reusable piece of the user interface. Props are values passed into a component so it can display different information. State stores information that can change while a component is being used. When state changes, React re-renders the component so the page shows the updated information.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Core Concepts</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/jsx">
+    function Greeting({ name }) {
+      return <h1>Hello, {name}!</h1>;
+    }
+
+    function Counter() {
+      const [count, setCount] = React.useState(0);
+
+      return (
+        <section>
+          <p>Count: {count}</p>
+          <button onClick={() => setCount(count + 1)}>Increase Count</button>
+        </section>
+      );
+    }
+
+    function App() {
+      return (
+        <main>
+          <Greeting name="Nicholas" />
+          <Counter />
+        </main>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

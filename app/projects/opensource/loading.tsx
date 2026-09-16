@@ -1,16 +1,4 @@
-import ProjectList from "@/components/ProjectList";
-import { getProjects } from "@/lib/projects-db";
-import { Suspense } from "react";
-
-export const dynamic = "force-dynamic";
-
-async function SchoolProjectList() {
-  const projects = await getProjects("school");
-
-  return <ProjectList projects={projects} />;
-}
-
-function SchoolProjectListSkeleton() {
+function ProjectListSkeleton() {
   return (
     <div className="mt-6 grid gap-6 md:grid-cols-2" aria-hidden="true">
       {Array.from({ length: 4 }).map((_, index) => (
@@ -36,13 +24,11 @@ function SchoolProjectListSkeleton() {
   );
 }
 
-export default async function SchoolProjectsPage() {
+export default function OpenSourceProjectsLoading() {
   return (
     <section>
-      <h1 className="text-4xl font-bold text-slate-950">School Projects</h1>
-      <Suspense fallback={<SchoolProjectListSkeleton />}>
-        <SchoolProjectList />
-      </Suspense>
+      <div className="h-10 w-3/4 animate-pulse bg-slate-200" />
+      <ProjectListSkeleton />
     </section>
   );
 }

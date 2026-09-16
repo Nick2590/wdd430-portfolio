@@ -1,8 +1,8 @@
 import ProjectList from "@/components/ProjectList";
 import { getProjects } from "@/lib/projects-db";
 
-export default function OpenSourceProjectsPage() {
-  const projects = getProjects("opensource");
+export default async function OpenSourceProjectsPage() {
+  const projects = await getProjects("opensource");
 
   return (
     <section>

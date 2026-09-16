@@ -1,8 +1,8 @@
 import ProjectList from "@/components/ProjectList";
 import { getProjects } from "@/lib/projects-db";
 
-export default function SchoolProjectsPage() {
-  const projects = getProjects("school");
+export default async function SchoolProjectsPage() {
+  const projects = await getProjects("school");
 
   return (
     <section>

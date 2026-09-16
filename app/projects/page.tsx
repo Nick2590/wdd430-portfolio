@@ -1,10 +1,20 @@
+import Pagination from "@/components/Pagination";
 import ProjectList from "@/components/ProjectList";
-import { getProjects } from "@/lib/projects-db";
+import ProjectSearch from "@/components/ProjectSearch";
+import { fetchFilteredProjects, fetchProjectsPages } from "@/lib/projects-db";
 
 export const dynamic = "force-dynamic";
 
-export default async function ProjectsPage() {
-  const projects = await getProjects();
+interface ProjectsPageProps {
+  searchParams: Promise<{ query?: string; page?: string }>;
+}
+
+export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
+  const { query, page } = await searchParams;
+  const [projects, totalPages] = await Promise.all([
+    fetchFilteredProjects(query, page),
+    fetchProjectsPages(query),
+  ]);
 
   return (
     <section>
@@ -13,7 +23,9 @@ export default async function ProjectsPage() {
       <p className="mt-5 text-lg leading-8 text-slate-700">
         Explore my open source work and school projects through the section links above.
       </p>
+      <ProjectSearch />
       <ProjectList projects={projects} />
+      <Pagination totalPages={totalPages} />
     </section>
   );
 }

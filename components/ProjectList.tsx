@@ -1,4 +1,5 @@
 import ProjectCard from "@/components/ProjectCard";
+import type { Project as DatabaseProject } from "@/lib/projects-db";
 
 export interface Project {
   title: string;
@@ -8,14 +9,14 @@ export interface Project {
 }
 
 interface ProjectListProps {
-  projects: Project[];
+  projects: Array<DatabaseProject | Project>;
 }
 
 export default function ProjectList({ projects }: ProjectListProps) {
   return (
     <div className="mt-6 grid gap-6 md:grid-cols-2">
       {projects.map((project) => (
-        <ProjectCard key={project.title} {...project} />
+        <ProjectCard key={'id' in project ? project.id : project.title} {...project} />
       ))}
     </div>
   );

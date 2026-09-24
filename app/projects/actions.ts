@@ -43,14 +43,19 @@ export async function createProject(formData: FormData) {
     return;
   }
 
-  await sql`
-    INSERT INTO projects (title, description, technologies)
-    VALUES (
-      ${project.title},
-      ${project.description},
-      string_to_array(${project.technologies.join(',')}, ${','})
-    )
-  `;
+  try {
+    await sql`
+      INSERT INTO projects (title, description, technologies)
+      VALUES (
+        ${project.title},
+        ${project.description},
+        string_to_array(${project.technologies.join(',')}, ${','})
+      )
+    `;
+  } catch (error) {
+    console.error('Failed to create project:', error);
+    throw new Error('Unable to create the project. Please try again.');
+  }
 
   revalidatePath('/projects');
   redirect('/projects');
@@ -63,13 +68,18 @@ export async function updateProject(id: number, formData: FormData) {
     return;
   }
 
-  await sql`
-    UPDATE projects
-    SET title = ${project.title},
-        description = ${project.description},
-      technologies = string_to_array(${project.technologies.join(',')}, ${','})
-    WHERE id = ${id}
-  `;
+  try {
+    await sql`
+      UPDATE projects
+      SET title = ${project.title},
+          description = ${project.description},
+        technologies = string_to_array(${project.technologies.join(',')}, ${','})
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.error('Failed to update project:', error);
+    throw new Error('Unable to update the project. Please try again.');
+  }
 
   revalidatePath('/projects');
   redirect('/projects');
@@ -82,6 +92,12 @@ export async function deleteProject(formData: FormData) {
     return;
   }
 
-  await sql`DELETE FROM projects WHERE id = ${id}`;
+  try {
+    await sql`DELETE FROM projects WHERE id = ${id}`;
+  } catch (error) {
+    console.error('Failed to delete project:', error);
+    throw new Error('Unable to delete the project. Please try again.');
+  }
+
   revalidatePath('/projects');
 }

@@ -17,6 +17,26 @@ const ProjectFormSchema = z.object({
     ),
 });
 
+const CreateProjectFormSchema = ProjectFormSchema.extend({
+  title: z.string().trim().min(3, 'Title must be at least 3 characters.'),
+  description: z.string().trim().min(20, 'Description must be at least 20 characters.'),
+  yearCompleted: z.coerce
+    .number()
+    .int('Year completed must be a whole number.')
+    .min(2000, 'Year completed must be 2000 or later.')
+    .max(new Date().getFullYear(), 'Year completed cannot be in the future.'),
+});
+
+export type State = {
+  errors?: {
+    title?: string[];
+    description?: string[];
+    technologies?: string[];
+    yearCompleted?: string[];
+  };
+  message?: string | null;
+};
+
 function parseProjectFormData(formData: FormData) {
   const validation = ProjectFormSchema.safeParse({
     title: formData.get('title'),
@@ -36,25 +56,42 @@ function parseProjectFormData(formData: FormData) {
   return { ...validation.data, technologies };
 }
 
-export async function createProject(formData: FormData) {
-  const project = parseProjectFormData(formData);
+export async function createProject(_prevState: State, formData: FormData): Promise<State> {
+  const validatedFields = CreateProjectFormSchema.safeParse({
+    title: formData.get('title'),
+    description: formData.get('description'),
+    technologies: formData.get('technologies'),
+    yearCompleted: formData.get('yearCompleted'),
+  });
 
-  if (!project) {
-    return;
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing or invalid fields. Failed to create project.',
+    };
   }
+
+  const project = {
+    ...validatedFields.data,
+    technologies: validatedFields.data.technologies
+      .split(',')
+      .map((technology) => technology.trim())
+      .filter(Boolean),
+  };
 
   try {
     await sql`
-      INSERT INTO projects (title, description, technologies)
+      INSERT INTO projects (title, description, technologies, year_completed)
       VALUES (
         ${project.title},
         ${project.description},
-        string_to_array(${project.technologies.join(',')}, ${','})
+        string_to_array(${project.technologies.join(',')}, ${','}),
+        ${project.yearCompleted}
       )
     `;
   } catch (error) {
     console.error('Failed to create project:', error);
-    throw new Error('Unable to create the project. Please try again.');
+    return { message: 'Unable to create the project. Please try again.' };
   }
 
   revalidatePath('/projects');

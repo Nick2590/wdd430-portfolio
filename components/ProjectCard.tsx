@@ -7,9 +7,17 @@ interface ProjectCardProps {
   description: string;
   technologies: string[];
   link?: string;
+  management?: boolean;
 }
 
-export default function ProjectCard({ id, title, description, technologies, link }: ProjectCardProps) {
+export default function ProjectCard({
+  id,
+  title,
+  description,
+  technologies,
+  link,
+  management = false,
+}: ProjectCardProps) {
   return (
     <article className="border border-slate-300 bg-white p-6 shadow-sm">
       <h3 className="text-xl font-bold text-slate-950">{title}</h3>
@@ -25,12 +33,17 @@ export default function ProjectCard({ id, title, description, technologies, link
         </a>
       )}
       {id !== undefined && (
-        <div className="mt-6 flex items-center gap-4">
-          <Link className="font-semibold text-teal-700 underline hover:text-teal-900" href={`/projects/${id}/edit`}>Edit</Link>
-          <form action={deleteProject}>
-            <input type="hidden" name="id" value={id} />
-            <button className="font-semibold text-red-700 underline hover:text-red-900" type="submit">Delete</button>
-          </form>
+        <div className="mt-6 flex flex-wrap items-center gap-4">
+          <Link className="font-semibold text-teal-700 underline hover:text-teal-900" href={`/projects/${id}`}>View details</Link>
+          {management && (
+            <>
+              <Link className="font-semibold text-teal-700 underline hover:text-teal-900" href={`/dashboard/projects/${id}/edit`}>Edit</Link>
+              <form action={deleteProject}>
+                <input type="hidden" name="id" value={id} />
+                <button className="font-semibold text-red-700 underline hover:text-red-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700" type="submit">Delete</button>
+              </form>
+            </>
+          )}
         </div>
       )}
     </article>

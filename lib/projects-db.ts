@@ -11,6 +11,22 @@ export interface Project {
   link?: string;
 }
 
+export interface AuthUser {
+  id: string;
+  email: string;
+  passwordHash: string;
+}
+
+export async function getUserByEmail(email: string): Promise<AuthUser | null> {
+  const { rows } = await sql<AuthUser>`
+    SELECT id::text AS id, email, password_hash AS "passwordHash"
+    FROM users
+    WHERE email = ${email.trim().toLowerCase()}
+    LIMIT 1
+  `;
+  return rows[0] ?? null;
+}
+
 export async function getProjects(
   type?: string | null
 ): Promise<Project[]> {

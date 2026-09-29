@@ -10,13 +10,18 @@ export interface Project {
 
 interface ProjectListProps {
   projects: Array<DatabaseProject | Project>;
+  management?: boolean;
 }
 
-export default function ProjectList({ projects }: ProjectListProps) {
+export default function ProjectList({ projects, management = false }: ProjectListProps) {
   return (
     <div className="mt-6 grid gap-6 md:grid-cols-2">
       {projects.map((project) => (
-        <ProjectCard key={'id' in project ? project.id : project.title} {...project} />
+        <ProjectCard
+          key={'id' in project ? project.id : project.title}
+          {...project}
+          management={management}
+        />
       ))}
     </div>
   );

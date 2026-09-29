@@ -4,6 +4,15 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
+import { auth } from '@/auth';
+
+async function requireOwnerSession() {
+  const session = await auth();
+  if (!session?.user) {
+    throw new Error('Not authenticated');
+  }
+  return session;
+}
 
 const ProjectFormSchema = z.object({
   title: z.string().trim().min(1, 'Title is required.'),
@@ -57,6 +66,8 @@ function parseProjectFormData(formData: FormData) {
 }
 
 export async function createProject(_prevState: State, formData: FormData): Promise<State> {
+  await requireOwnerSession();
+
   const validatedFields = CreateProjectFormSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
@@ -99,6 +110,8 @@ export async function createProject(_prevState: State, formData: FormData): Prom
 }
 
 export async function updateProject(id: number, formData: FormData) {
+  await requireOwnerSession();
+
   const project = parseProjectFormData(formData);
 
   if (!project) {
@@ -123,6 +136,8 @@ export async function updateProject(id: number, formData: FormData) {
 }
 
 export async function deleteProject(formData: FormData) {
+  await requireOwnerSession();
+
   const id = Number(formData.get('id'));
 
   if (!Number.isInteger(id) || id <= 0) {

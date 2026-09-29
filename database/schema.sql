@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL
+);

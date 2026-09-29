@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import ProjectList from "@/components/ProjectList";
 import { getProjects } from "@/lib/projects-db";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Open Source Projects",
+  description: "Browse open source projects by Nicholas Goodsell.",
+};
 
 export default async function OpenSourceProjectsPage() {
   const projects = await getProjects("opensource");

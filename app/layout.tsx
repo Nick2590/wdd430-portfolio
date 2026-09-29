@@ -4,8 +4,24 @@ import Header from "@/components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nicholas Goodsell | WDD 430 Portfolio",
-  description: "Portfolio and coursework for WDD 430.",
+  metadataBase: new URL("https://wdd430-portfolio-nick-1fb1.vercel.app"),
+  title: {
+    default: "Nicholas Goodsell | Project Portfolio",
+    template: "%s | Project Portfolio",
+  },
+  description: "A portfolio of web development projects by Nicholas Goodsell.",
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Nicholas Goodsell | Project Portfolio",
+    title: "Nicholas Goodsell | Project Portfolio",
+    description: "A portfolio of web development projects by Nicholas Goodsell.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Nicholas Goodsell | Project Portfolio",
+    description: "A portfolio of web development projects by Nicholas Goodsell.",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

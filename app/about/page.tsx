@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import SkillsCard from "@/components/SkillsCard";
+
+export const metadata: Metadata = {
+  title: "About Nicholas Goodsell",
+  description: "Learn about Nicholas Goodsell's WDD 430 coursework and web development skills.",
+};
 
 const skills = ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express", "PostgreSQL", "HTML", "CSS"];
 

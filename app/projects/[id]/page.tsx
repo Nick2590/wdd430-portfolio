@@ -1,9 +1,39 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { getProjectById } from '@/lib/projects-db';
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
+}
+
+const getCachedProjectById = cache(getProjectById);
+
+export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
+  const { id: idParam } = await params;
+  const id = Number(idParam);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return {
+      title: 'Project Not Found',
+      description: 'The requested portfolio project could not be found.',
+    };
+  }
+
+  const project = await getCachedProjectById(id);
+
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+      description: 'The requested portfolio project could not be found.',
+    };
+  }
+
+  return {
+    title: project.title,
+    description: project.description,
+  };
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
@@ -14,7 +44,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     notFound();
   }
 
-  const project = await getProjectById(id);
+  const project = await getCachedProjectById(id);
 
   if (!project) {
     notFound();

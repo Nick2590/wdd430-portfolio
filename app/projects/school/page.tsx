@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import ProjectList from "@/components/ProjectList";
 import { getProjects } from "@/lib/projects-db";
 import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "School Projects",
+  description: "Browse projects from Nicholas Goodsell's school coursework.",
+};
 
 async function SchoolProjectList() {
   const projects = await getProjects("school");

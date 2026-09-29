@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Contact information for Nicholas Goodsell will be added to this page soon.",
+};
+
 export default function ContactPage() {
   return (
     <section className="max-w-3xl">

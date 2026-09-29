@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Pagination from "@/components/Pagination";
 import ProjectList from "@/components/ProjectList";
 import ProjectSearch from "@/components/ProjectSearch";
 import { fetchFilteredProjects, fetchProjectsPages } from "@/lib/projects-db";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Browse Nicholas Goodsell's open source and school projects.",
+};
 
 interface ProjectsPageProps {
   searchParams: Promise<{ query?: string; page?: string }>;
